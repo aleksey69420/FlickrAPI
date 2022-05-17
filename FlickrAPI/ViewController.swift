@@ -12,9 +12,18 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = .systemRed
+		view.backgroundColor = .systemBackground
+		
+		
+		NetworkManager.request(endpoint: FlickEndPoint.getSearchResults(searchText: "iOS", page: 1)) { (result: Result<FlickrResponse, Error>) in
+			
+			switch result {
+			case .success(let response):
+				print("success - \(response)")
+			case .failure(let error):
+				print("failure - \(error)")
+			}
+		}
 	}
-
-
 }
 
