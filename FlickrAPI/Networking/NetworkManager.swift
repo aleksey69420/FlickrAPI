@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // class or struct in this case?
 
@@ -72,5 +73,48 @@ class NetworkManager {
 			
 		}
 		dataTask.resume()
+	}
+	
+	
+	// MARK: - Image Download
+	
+	enum PhotoError: Error {
+		case missingURL
+		case imageCreationError
+	}
+	
+	
+	class func fetchImage(for photo: FlickrPhoto, then handler: @escaping (Result<UIImage, Error>) -> Void) {
+		guard let photoURL = photo.remoteURL else {
+			handler(.failure(PhotoError.missingURL))
+			return
+		}
+		
+		let request = URLRequest(url: photoURL)
+		let task = URLSession.shared.dataTask(with: request) { data, response, error in
+			let result = self.processImageRequest(data: data, error: error)
+			DispatchQueue.main.async {
+				handler(result)
+			}
+			
+			OperationQueue.main.addOperation {
+				handler(result)
+			}
+		}
+		task.resume()
+	}
+	
+	
+	// are there any benefit of this approach
+	class private func processImageRequest(data: Data?, error: Error?) -> Result<UIImage, Error> {
+		guard let imageData = data, let image = UIImage(data: imageData) else {
+			// couldn't create image
+			if data == nil {
+				return .failure(error!) // what if it's still nil somehow
+			} else {
+				return .failure(PhotoError.imageCreationError)
+			}
+		}
+		return .success(image)
 	}
 }
