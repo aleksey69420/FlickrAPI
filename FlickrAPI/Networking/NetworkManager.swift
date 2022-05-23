@@ -49,7 +49,18 @@ class NetworkManager {
 			
 			// alternative implementation
 			do {
-				let responseObject = try JSONDecoder().decode(ResponseType.self, from: data)
+				let dateFormatter = DateFormatter()
+				dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+				dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+				dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+				
+				let decoder = JSONDecoder()
+				decoder.dateDecodingStrategy = .formatted(dateFormatter)
+				
+				let responseObject = try decoder.decode(ResponseType.self, from: data)
+				
+				
+				
 				DispatchQueue.main.async {
 					handler(.success(responseObject))
 				}

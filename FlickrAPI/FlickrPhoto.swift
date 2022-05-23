@@ -13,10 +13,24 @@ struct FlickrPhoto: Codable {
 	let secret: String
 	let server: String
 	let farm: Int
+	let title: String
+	let dateTaken: Date
+	let remoteURL: URL?
 	
+	
+	enum CodingKeys: String, CodingKey {
+		case id
+		case owner
+		case secret
+		case server
+		case farm
+		case title
+		case dateTaken = "datetaken"
+		case remoteURL = "url_z"
+	}
 	
 	func imageURL(size: String = "m") -> URL? {
-		return URL(string: "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_\(size).jpg")
+		return URL(string: "https://live.staticflickr.com/\(server)/\(id)_\(secret)_\(size).jpg")
 	}
 }
 

@@ -21,6 +21,7 @@ protocol EndPoint {
 enum FlickEndPoint: EndPoint {
 	
 	case getSearchResults(searchText: String, page: Int)
+	case interestingPhotos(page: Int)
 	
 	
 	var scheme: String {
@@ -39,7 +40,7 @@ enum FlickEndPoint: EndPoint {
 	
 	var path: String {
 		switch self {
-		case .getSearchResults:
+		case .getSearchResults, .interestingPhotos:
 			return "/services/rest/"
 		}
 	}
@@ -48,6 +49,8 @@ enum FlickEndPoint: EndPoint {
 	var parameters: [URLQueryItem] {
 		
 		let apiKey = "e64b3ac5f1aada47c6436406cd313196"
+		
+		// idea of basic and additional parameters to reduce repeatable ones (page, per_page, format)
 		
 		switch self {
 		case .getSearchResults(let searchText, let page):
@@ -60,13 +63,24 @@ enum FlickEndPoint: EndPoint {
 				URLQueryItem(name: "nojsoncallback", value: "1"),
 				URLQueryItem(name: "api_key", value: apiKey),
 			]
+		
+		case .interestingPhotos(let page):
+			return [
+				URLQueryItem(name: "page", value: String(page)),
+				URLQueryItem(name: "method", value: "flickr.interestingness.getList"),
+				URLQueryItem(name: "format", value: "json"),
+				URLQueryItem(name: "per_page", value: "20"),
+				URLQueryItem(name: "nojsoncallback", value: "1"),
+				URLQueryItem(name: "extras", value: "url_z,date_taken"),
+				URLQueryItem(name: "api_key", value: apiKey),
+			]
 		}
 	}
 	
 	
 	var method: String {
 		switch self {
-		case .getSearchResults:
+		case .getSearchResults, .interestingPhotos:
 			return "GET"
 		}
 	}
