@@ -35,8 +35,16 @@ struct FlickrPhoto: Codable {
 }
 
 
-struct FlickrResultsPage: Codable {
+struct FlickrPhotosResponse: Codable {
 	let page: Int
 	let pages: Int
-	let photo: [FlickrPhoto]
+	let total: Int
+	let photos: [FlickrPhoto]
+	
+	enum CodingKeys: String, CodingKey {
+		case page
+		case pages
+		case total
+		case photos = "photo"
+	}
 }

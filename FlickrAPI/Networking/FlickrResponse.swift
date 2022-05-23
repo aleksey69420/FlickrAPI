@@ -12,5 +12,9 @@ import Foundation
 
 
 struct FlickrResponse: Codable {
-	let photos: FlickrResultsPage?
+	let photosInfo: FlickrPhotosResponse
+	
+	enum CodingKeys: String, CodingKey {
+		case photosInfo = "photos"
+	}
 }

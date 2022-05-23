@@ -18,7 +18,7 @@ class ViewController: UIViewController {
 		NetworkManager.request(endpoint: FlickEndPoint.interestingPhotos(page: 1)) { (result: Result<FlickrResponse, Error>) in
 			switch result {
 			case .success(let response):
-				print("success: \(response.photos?.photo.count ?? 0) interesting photos")
+				print("success: \(response.photosInfo.photos) interesting photos")
 			case .failure(let error):
 				print("failure - \(error)")
 			}
