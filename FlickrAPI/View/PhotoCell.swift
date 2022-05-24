@@ -22,10 +22,11 @@ class PhotoCell: UICollectionViewCell {
 	required init?(coder: NSCoder) { fatalError() }
 	
 	
-//	override func prepareForReuse() {
-//		super.prepareForReuse()
-//		imageView.image = nil
-//	}
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		imageView.image = nil
+	}
+	
 	
 	func update(displaying image: UIImage?) {
 		if let image = image {

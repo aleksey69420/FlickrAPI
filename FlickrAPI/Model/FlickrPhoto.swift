@@ -34,6 +34,14 @@ struct FlickrPhoto: Codable {
 	}
 }
 
+extension FlickrPhoto: Equatable {
+	// no need in this specific case because of id property
+	static func == (lhs: FlickrPhoto, rhs: FlickrPhoto) -> Bool {
+		return lhs.id == rhs.id
+		
+	}
+}
+
 
 struct FlickrPhotosResponse: Codable {
 	let page: Int

@@ -9,7 +9,6 @@ import UIKit
 
 class ViewController: UIViewController {
 	
-	//var photos: [FlickrPhoto] = []
 	var collectionView: UICollectionView!
 	let photoDataSource = PhotoDataSource()
 
@@ -42,6 +41,7 @@ class ViewController: UIViewController {
 		collectionView.backgroundColor = .clear
 		
 		collectionView.dataSource = photoDataSource
+		collectionView.delegate = self
 	}
 	
 	
@@ -57,5 +57,34 @@ class ViewController: UIViewController {
 			collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 			collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 		])
+	}
+}
+
+
+extension ViewController: UICollectionViewDelegate {
+	
+	// fetching image there - new approach for me - don't like it
+	// is there other option to achieve the same result?
+	
+	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		
+		let photo = photoDataSource.photos[indexPath.item]
+		
+		NetworkManager.fetchImage(for: photo) { result in
+			
+			//index path for the photo might have changed between the time request started and finished, so find the most recent index path
+			
+			if let photoIndex = self.photoDataSource.photos.firstIndex(of: photo) {
+				let photoIndexPath = IndexPath(item: photoIndex, section: 0)
+				switch result {
+				case .success(let image):
+					if let cell = self.collectionView.cellForItem(at: photoIndexPath) as? PhotoCell {
+						cell.update(displaying: image)
+					}
+				case .failure: break
+				}
+				
+			}
+		}
 	}
 }
