@@ -9,8 +9,9 @@ import UIKit
 
 class ViewController: UIViewController {
 	
-	var photos: [FlickrPhoto] = []
+	//var photos: [FlickrPhoto] = []
 	var collectionView: UICollectionView!
+	let photoDataSource = PhotoDataSource()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -21,23 +22,26 @@ class ViewController: UIViewController {
 		NetworkManager.request(endpoint: FlickEndPoint.interestingPhotos(page: 1)) { (result: Result<FlickrResponse, Error>) in
 			switch result {
 			case .success(let response):
-				self.photos = response.photosInfo.photos
+				self.photoDataSource.photos = response.photosInfo.photos
 				self.collectionView.reloadData()
 			case .failure(let error):
 				print("failure - \(error)")
+				self.photoDataSource.photos.removeAll()
 			}
+			self.collectionView.reloadSections(IndexSet(integer: 0))
 		}
 	}
 	
 	
 	private func configureCollectionView() {
-		let layout = UICollectionViewFlowLayout()
+		let layout = UIHelper.createTwoColumnFlowLayout(view: view)
 		collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		
 		collectionView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.reuseId)
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
 		collectionView.backgroundColor = .clear
-		collectionView.dataSource = self
+		
+		collectionView.dataSource = photoDataSource
 	}
 	
 	
@@ -57,37 +61,33 @@ class ViewController: UIViewController {
 }
 
 
-extension ViewController: UICollectionViewDataSource {
-	
-	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		return 1
-	}
-	
-	
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return photos.count
-	}
-	
-	
-	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		
-		let photo = photos[indexPath.item]
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
-		NetworkManager.fetchImage(for: photo, then: { result in
-			switch result {
-			case .success(let image):
-				cell.imageView.image = image
-			case .failure(let error):
-				print("error downloading image: \(error)")
-			}
-		})
-		return cell
-	}
-	
-	
-	
-	
-}
+//extension ViewController: UICollectionViewDataSource {
+//
+//	func numberOfSections(in collectionView: UICollectionView) -> Int {
+//		return 1
+//	}
+//
+//
+//	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//		return photos.count
+//	}
+//
+//
+//	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//
+//		let photo = photos[indexPath.item]
+//		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
+//		NetworkManager.fetchImage(for: photo, then: { result in
+//			switch result {
+//			case .success(let image):
+//				cell.imageView.image = image
+//			case .failure(let error):
+//				print("error downloading image: \(error)")
+//			}
+//		})
+//		return cell
+//	}
+//}
 
 
 class ImageCell: UICollectionViewCell {
