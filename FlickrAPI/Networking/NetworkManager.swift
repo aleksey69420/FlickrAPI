@@ -83,8 +83,21 @@ class NetworkManager {
 		case imageCreationError
 	}
 	
+	// how can I extract this - the whole download images logic is too complicated
+	static let cache = NSCache<NSString, UIImage>()
 	
 	class func fetchImage(for photo: FlickrPhoto, then handler: @escaping (Result<UIImage, Error>) -> Void) {
+		
+		let cacheKey = photo.id as NSString
+		
+		if let image = cache.object(forKey: cacheKey) {
+			print("got image from cache")
+			DispatchQueue.main.async {
+				handler(.success(image))
+			}
+			return
+		}
+		
 		guard let photoURL = photo.remoteURL else {
 			handler(.failure(PhotoError.missingURL))
 			return
@@ -93,11 +106,13 @@ class NetworkManager {
 		let request = URLRequest(url: photoURL)
 		let task = URLSession.shared.dataTask(with: request) { data, response, error in
 			let result = self.processImageRequest(data: data, error: error)
-			DispatchQueue.main.async {
-				handler(result)
+			
+			// super wierd way to do this - can be replaced with switch on result
+			if case let .success(image) = result {
+				cache.setObject(image, forKey: cacheKey)
 			}
 			
-			OperationQueue.main.addOperation {
+			DispatchQueue.main.async {
 				handler(result)
 			}
 		}
