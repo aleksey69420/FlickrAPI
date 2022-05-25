@@ -87,4 +87,11 @@ extension ViewController: UICollectionViewDelegate {
 			}
 		}
 	}
+	
+	
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		
+		let photoDetailVC = PhotoDetailVC(photo: photoDataSource.photos[indexPath.item])
+		navigationController?.pushViewController(photoDetailVC, animated: true)
+	}
 }
