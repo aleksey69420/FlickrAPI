@@ -9,6 +9,12 @@ import Foundation
 
 //protocol - allItems, saveitem, save, delete, update?, reorder?
 
+enum PersistenceActionType {
+	case add
+	case remove
+}
+
+
 class SearchOptionsManager {
 	
 	//TODO: - show all options with the checkmark for the selected ones (convert to model)
@@ -48,6 +54,42 @@ class SearchOptionsManager {
 			return nil
 		} catch {
 			return error
+		}
+	}
+	
+	
+	//MARK - Update (Add or Remove)
+	
+	func updateWith(favorite: String, actionType: PersistenceActionType, then handler: @escaping (Error?) -> Void) {
+		// get existing, do something, save changes
+		
+		retriveFavorites { result in
+			
+			switch result {
+				// there is data
+			case .success(var favorites):
+				
+				switch actionType {
+				case .add:
+					guard !favorites.contains(favorite) else {
+						let error = NSError(domain: "", code: 200, userInfo: [ NSLocalizedDescriptionKey: "Item is already saved"])
+						handler(error)
+						return
+					}
+					
+				case .remove:
+					favorites.removeAll { toRemove in
+						toRemove == favorite
+					}
+				}
+				
+				// completion of save matches the update - Error?
+				handler(self.save(favorites: favorites))
+			
+				// handle no data case
+			case .failure(let error):
+				handler(error)
+			}
 		}
 	}
 }
