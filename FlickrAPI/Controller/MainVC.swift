@@ -28,6 +28,7 @@ class MainVC: UIViewController {
 		super.viewDidLoad()
 		
 		configure()
+		searchOptionsManager.save(favorites: ["Interested Photos", "Search by Name"])
 	}
 	
 	
@@ -38,10 +39,14 @@ class MainVC: UIViewController {
 	
 	
 	private func getSearchOptions() {
-		//TODO: - retrieve selected options for defaults and update UI (thread?) or show error message
-		let tempSearchOptions = searchOptionsManager.selectedOptions //
-		
-		updateUI(with: tempSearchOptions)
+		searchOptionsManager.retriveFavorites { result in
+			switch result {
+			case .success(let options):
+				self.updateUI(with: options)
+			case .failure(let error):
+				print("error - \(error.localizedDescription)")
+			}
+		}
 	}
 	
 	
