@@ -37,7 +37,8 @@ class MainVC: UIViewController {
 		
 		view.addSubview(tableView)
 		tableView.translatesAutoresizingMaskIntoConstraints = false
-		tableView.frame = view.bounds
+		tableView.rowHeight = 80
+		tableView.register(SearchOptionCell.self, forCellReuseIdentifier: SearchOptionCell.reuseId)
 		
 		tableView.dataSource = self
 		
@@ -58,9 +59,14 @@ extension MainVC: UITableViewDataSource {
 		return searchOptionsManager.selectedOptions.count
 	}
 	
+	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		return UITableViewCell()
+		
+		let searchName = searchOptionsManager.selectedOptions[indexPath.row]
+		
+		let cell = tableView.dequeueReusableCell(withIdentifier: SearchOptionCell.reuseId, for: indexPath) as! SearchOptionCell
+		cell.iconImageView.image = UIImage(systemName: "magnifyingglass.circle")
+		cell.titleLabel.text = searchName
+		return cell
 	}
-	
-	
 }
