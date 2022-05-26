@@ -9,12 +9,24 @@ import UIKit
 
 class MainVC: UIViewController {
 	
+	let searchOptionsManager: SearchOptionsManager
+	
 	let tableView = UITableView()
+	
+	
+	init(searchOptionsManager: SearchOptionsManager = SearchOptionsManager()) {
+		self.searchOptionsManager = searchOptionsManager
+		super.init(nibName: nil, bundle: nil)
+	}
+	
+	required init?(coder: NSCoder) { fatalError() }
+	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		configure()
+		print(searchOptionsManager.allOptions)
 	}
 	
 	
@@ -43,7 +55,7 @@ class MainVC: UIViewController {
 extension MainVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 10
+		return searchOptionsManager.selectedOptions.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
