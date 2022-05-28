@@ -13,7 +13,7 @@ class TabBarController: UITabBarController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		viewControllers = [createSearchVC()]
+		viewControllers = [createSearchVC(), createSavedPhotosVC()]
 	}
 	
 	
@@ -23,6 +23,16 @@ class TabBarController: UITabBarController {
 		mainVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
 		
 		return UINavigationController(rootViewController: mainVC)
+		
+	}
+	
+	
+	func createSavedPhotosVC() -> UINavigationController {
+		let savedPhotosVC = SavedPhotosVC()
+		savedPhotosVC.title = "Saved Photos"
+		savedPhotosVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+		
+		return UINavigationController(rootViewController: savedPhotosVC)
 		
 	}
 }
