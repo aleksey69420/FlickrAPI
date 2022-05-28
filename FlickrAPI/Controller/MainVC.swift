@@ -53,6 +53,7 @@ class MainVC: UIViewController {
 	private func updateUI(with options: [String]) {
 		if options.isEmpty {
 			// show empty state view
+			print("no options selected - please a nice placeholder image")
 		} else {
 			self.searchOptions = options
 			DispatchQueue.main.async {
@@ -74,6 +75,7 @@ class MainVC: UIViewController {
 		tableView.register(SearchOptionCell.self, forCellReuseIdentifier: SearchOptionCell.reuseId)
 		
 		tableView.dataSource = self
+		tableView.delegate = self
 		
 		NSLayoutConstraint.activate([
 			tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -101,5 +103,27 @@ extension MainVC: UITableViewDataSource {
 		cell.iconImageView.image = UIImage(systemName: "magnifyingglass.circle")
 		cell.titleLabel.text = searchName
 		return cell
+	}
+}
+
+
+extension MainVC: UITableViewDelegate {
+	
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+		
+		guard editingStyle == .delete else { return }
+		
+		searchOptionsManager.updateWith(favorite: searchOptions[indexPath.row], actionType: .remove) { [weak self] error in
+			
+			guard let self = self else { return }
+			
+			guard let error = error else {
+				self.searchOptions.remove(at: indexPath.row) // fetch data instead?
+				tableView.reloadData()
+				return
+			}
+			
+			print("error removing item \(error.localizedDescription)")
+		}
 	}
 }
