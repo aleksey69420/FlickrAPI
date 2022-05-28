@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  PhotosVC.swift
 //  FlickrAPI
 //
 //  Created by Aleksey on 5/17/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class PhotosVC: UIViewController {
 	
 	var collectionView: UICollectionView!
 	let photoDataSource = PhotoDataSource()
@@ -61,7 +61,7 @@ class ViewController: UIViewController {
 }
 
 
-extension ViewController: UICollectionViewDelegate {
+extension PhotosVC: UICollectionViewDelegate {
 	
 	// fetching image there - new approach for me - don't like it
 	// is there other option to achieve the same result?
