@@ -23,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 	private func setRootVC() {
-		let navigationController = UINavigationController(rootViewController: MainVC())
-		window?.rootViewController = navigationController
+		window?.rootViewController = TabBarController()
 	}
 }
 
