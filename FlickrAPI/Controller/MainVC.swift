@@ -126,4 +126,12 @@ extension MainVC: UITableViewDelegate {
 			print("error removing item \(error.localizedDescription)")
 		}
 	}
+	
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		
+		tableView.deselectRow(at: indexPath, animated: true)
+		
+		navigationController?.pushViewController(PhotosVC(), animated: true)
+	}
 }
