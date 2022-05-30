@@ -21,7 +21,6 @@ class TabBarController: UITabBarController {
 		let mainVC = MainVC()
 		mainVC.title = "Search Screen"
 		mainVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-		
 		return UINavigationController(rootViewController: mainVC)
 		
 	}

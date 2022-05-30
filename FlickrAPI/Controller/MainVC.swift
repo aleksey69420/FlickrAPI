@@ -27,6 +27,8 @@ class MainVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.triangle"), style: .plain, target: self, action: #selector(showAvalableSearchOptions(_:)))
+		
 		configure()
 		searchOptionsManager.save(favorites: ["Interested Photos", "Search by Name"])
 	}
@@ -64,9 +66,17 @@ class MainVC: UIViewController {
 	}
 	
 	
+	@objc private func showAvalableSearchOptions(_ sender: UIBarButtonItem) {
+		print(#function)
+		let searchOptionsVC = SearchOptionsVC()
+		navigationController?.pushViewController(searchOptionsVC, animated: true)
+	}
+	
+	
 	private func configure() {
 		view.backgroundColor = .systemBackground
-		title = "Select Search Option"
+		title = "Search Photos"
+		navigationController?.navigationBar.prefersLargeTitles = true
 		
 		
 		view.addSubview(tableView)
