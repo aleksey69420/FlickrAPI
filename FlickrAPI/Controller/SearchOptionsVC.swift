@@ -9,10 +9,21 @@ import UIKit
 
 class SearchOptionsVC: UIViewController {
 	
-	let availableOptions = [SearchOption(name: "Interesting Photos", isFavorite: false), SearchOption(name: "Search by Name", isFavorite: true)]
+	var availableOptions: [SearchOption]
+	
+	let searchOptionsManager: SearchOptionsManager
 	
 	let tableView = UITableView()
-
+	
+	
+	init(searchOptionsManager: SearchOptionsManager) {
+		self.searchOptionsManager = searchOptionsManager
+		self.availableOptions = searchOptionsManager.allOptions
+		super.init(nibName: nil, bundle: nil)
+	}
+	
+	required init?(coder: NSCoder) { fatalError() }
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -75,6 +86,12 @@ extension SearchOptionsVC: UITableViewDelegate {
 		let cell = tableView.cellForRow(at: indexPath) as! SearchTypeCell
 		//cell.saved.toggle()
 		print("\(cell.title) is selected")
+		
+		var option = availableOptions[indexPath.row]
+		print(option.isFavorite)
+		option.isFavorite.toggle()
+		print(option.isFavorite)
+		cell.configure(for: option)
 		
 	}
 }

@@ -68,7 +68,7 @@ class MainVC: UIViewController {
 	
 	@objc private func showAvalableSearchOptions(_ sender: UIBarButtonItem) {
 		print(#function)
-		let searchOptionsVC = SearchOptionsVC()
+		let searchOptionsVC = SearchOptionsVC(searchOptionsManager: searchOptionsManager)
 		navigationController?.pushViewController(searchOptionsVC, animated: true)
 	}
 	

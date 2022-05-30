@@ -7,8 +7,13 @@
 
 import Foundation
 
-struct SearchOption {
+class SearchOption {
 	
 	let name: String
 	var isFavorite: Bool
+	
+	init(name: String, isFavorite: Bool = false) {
+		self.name = name
+		self.isFavorite = isFavorite
+	}
 }
