@@ -9,7 +9,7 @@ import UIKit
 
 class SearchOptionsVC: UIViewController {
 	
-	let availableOptions = ["Interested Photos", "Search by Name"]
+	let availableOptions = [SearchOption(name: "Interesting Photos", isFavorite: false), SearchOption(name: "Search by Name", isFavorite: true)]
 	
 	let tableView = UITableView()
 
@@ -52,11 +52,11 @@ extension SearchOptionsVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let searchName = availableOptions[indexPath.row]
+		let searchOpiton = availableOptions[indexPath.row]
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: SearchTypeCell.reuseId, for: indexPath) as! SearchTypeCell
 		
-		cell.configure(for: searchName)
+		cell.configure(for: searchOpiton)
 		
 		//cell.iconImageView.image = UIImage(systemName: "magnifyingglass.circle")
 		//cell.titleLabel.text = searchName
