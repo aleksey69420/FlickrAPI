@@ -40,10 +40,11 @@ class PhotoCell: UICollectionViewCell {
 	
 	
 	private func configure() {
-		backgroundColor = .systemBlue
+		backgroundColor = .clear
 		
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.contentMode = .scaleAspectFit
+		imageView.contentMode = .scaleAspectFill
+		imageView.clipsToBounds = true
 		addSubview(imageView)
 		
 		spinner.translatesAutoresizingMaskIntoConstraints = false

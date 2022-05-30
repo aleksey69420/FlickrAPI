@@ -39,10 +39,10 @@ class PhotoDetailVC: UIViewController {
 		
 		
 		NSLayoutConstraint.activate([
-			imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
 			imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
 			imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+			imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 		])
 	}
 	
