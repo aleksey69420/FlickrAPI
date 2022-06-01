@@ -40,8 +40,8 @@ class SearchTypeCell: UITableViewCell {
 	required init?(coder: NSCoder) { fatalError() }
 	
 	
-	func configure(for option: SearchOption) {
-		self.title = option.name
+	func configure(for option: Search) {
+		self.title = option.type
 		self.saved = option.isFavorite
 	}
 	

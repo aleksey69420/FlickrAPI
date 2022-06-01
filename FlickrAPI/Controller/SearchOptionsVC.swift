@@ -60,13 +60,13 @@ class SearchOptionsVC: UIViewController {
 extension SearchOptionsVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return searchStore.searchTypes.count
+		return searchStore.searches.count
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let searchOpiton = searchStore.searchTypes[indexPath.row]
+		let searchOpiton = searchStore.searches[indexPath.row]
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: SearchTypeCell.reuseId, for: indexPath) as! SearchTypeCell
 		cell.configure(for: searchOpiton)
@@ -84,7 +84,7 @@ extension SearchOptionsVC: UITableViewDelegate {
 		let cell = tableView.cellForRow(at: indexPath) as! SearchTypeCell
 		print("\(cell.title) is selected")
 		
-		let search = searchStore.searchTypes[indexPath.row]
+		let search = searchStore.searches[indexPath.row]
 		search.isFavorite.toggle()
 		cell.configure(for: search)
 	}

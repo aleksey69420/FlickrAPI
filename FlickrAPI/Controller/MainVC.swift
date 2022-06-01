@@ -9,18 +9,13 @@ import UIKit
 
 class MainVC: UIViewController {
 	
-	//let searchOptionsManager: SearchOptionsManager
 	let searchStore: SearchStore
-	
-	//var searchOptions: [String] = []
-	
-	var favoriteSearchTypes: [SearchOption] = []
+	var favoriteSearches: [Search] = []
 	
 	let tableView = UITableView()
 	
 	
 	init(searchStore: SearchStore = JSONSearchStore()) {
-//		self.searchOptionsManager = searchOptionsManager
 		self.searchStore = searchStore
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -39,7 +34,7 @@ class MainVC: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		favoriteSearchTypes = searchStore.getFavorites()
+		favoriteSearches = searchStore.getFavorites()
 		DispatchQueue.main.async {
 			self.tableView.reloadData()
 		}
@@ -107,17 +102,17 @@ class MainVC: UIViewController {
 extension MainVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return favoriteSearchTypes.count
+		return favoriteSearches.count
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let search = favoriteSearchTypes[indexPath.row]
+		let search = favoriteSearches[indexPath.row]
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: SearchOptionCell.reuseId, for: indexPath) as! SearchOptionCell
 		cell.iconImageView.image = UIImage(systemName: "magnifyingglass.circle")
-		cell.titleLabel.text = search.name
+		cell.titleLabel.text = search.type
 		return cell
 	}
 }

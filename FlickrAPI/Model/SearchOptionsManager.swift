@@ -19,7 +19,7 @@ class SearchOptionsManager {
 	
 	//TODO: - each option may have an icon (user can change it?) - custom object or viewModel?
 	
-	var allOptions = [SearchOption(name: "Intersting Photos"), SearchOption(name: "Search by Name Photos"), SearchOption(name: "Search by Place"), SearchOption(name: "Search by My Location"), ]
+	var allOptions = [Search(type: "Intersting Photos"), Search(type: "Search by Name Photos"), Search(type: "Search by Place"), Search(type: "Search by My Location"), ]
 	
 	
 	private let userDefaults = UserDefaults.standard
