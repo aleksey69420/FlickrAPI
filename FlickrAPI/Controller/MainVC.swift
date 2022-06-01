@@ -30,7 +30,6 @@ class MainVC: UIViewController {
 		navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.triangle"), style: .plain, target: self, action: #selector(showAvalableSearchOptions(_:)))
 		
 		configure()
-		searchOptionsManager.save(favorites: ["Interested Photos", "Search by Name"])
 	}
 	
 	

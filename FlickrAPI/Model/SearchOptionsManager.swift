@@ -17,11 +17,9 @@ enum PersistenceActionType {
 
 class SearchOptionsManager {
 	
-	//TODO: - show all options with the checkmark for the selected ones (convert to model)
 	//TODO: - each option may have an icon (user can change it?) - custom object or viewModel?
-	//var allOptions = ["Intersting Photos", "Search by Name", "Search by Place", "Search by Tag", "Search by Coordinates"]
+	
 	var allOptions = [SearchOption(name: "Intersting Photos"), SearchOption(name: "Search by Name Photos"), SearchOption(name: "Search by Place"), SearchOption(name: "Search by My Location"), ]
-	//var selectedOptions: [String] = ["Interested Photos", "Search by Name"]
 	
 	
 	private let userDefaults = UserDefaults.standard
