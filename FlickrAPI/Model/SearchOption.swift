@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SearchOption {
+class SearchOption: Codable {
 	
 	let name: String
 	var isFavorite: Bool

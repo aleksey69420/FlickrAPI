@@ -8,27 +8,30 @@
 import UIKit
 
 class SearchOptionsVC: UIViewController {
-	
-	var availableOptions: [SearchOption]
-	
-	let searchOptionsManager: SearchOptionsManager
+		
+	let searchStore: SearchStore
 	
 	let tableView = UITableView()
 	
 	
-	init(searchOptionsManager: SearchOptionsManager) {
-		self.searchOptionsManager = searchOptionsManager
-		self.availableOptions = searchOptionsManager.allOptions
+	init(searchStore: SearchStore) {
+		self.searchStore = searchStore
 		super.init(nibName: nil, bundle: nil)
 	}
 	
 	required init?(coder: NSCoder) { fatalError() }
+	
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 
 		configure()
     }
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		searchStore.saveChanges()
+	}
 	
 	
 	private func configure() {
@@ -57,21 +60,16 @@ class SearchOptionsVC: UIViewController {
 extension SearchOptionsVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return availableOptions.count
+		return searchStore.searchTypes.count
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let searchOpiton = availableOptions[indexPath.row]
+		let searchOpiton = searchStore.searchTypes[indexPath.row]
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: SearchTypeCell.reuseId, for: indexPath) as! SearchTypeCell
-		
 		cell.configure(for: searchOpiton)
-		
-		//cell.iconImageView.image = UIImage(systemName: "magnifyingglass.circle")
-		//cell.titleLabel.text = searchName
-		
 		return cell
 	}
 }
@@ -84,14 +82,10 @@ extension SearchOptionsVC: UITableViewDelegate {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let cell = tableView.cellForRow(at: indexPath) as! SearchTypeCell
-		//cell.saved.toggle()
 		print("\(cell.title) is selected")
 		
-		var option = availableOptions[indexPath.row]
-		print(option.isFavorite)
-		option.isFavorite.toggle()
-		print(option.isFavorite)
-		cell.configure(for: option)
-		
+		let search = searchStore.searchTypes[indexPath.row]
+		search.isFavorite.toggle()
+		cell.configure(for: search)
 	}
 }

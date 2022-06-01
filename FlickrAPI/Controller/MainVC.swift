@@ -9,15 +9,19 @@ import UIKit
 
 class MainVC: UIViewController {
 	
-	let searchOptionsManager: SearchOptionsManager
+	//let searchOptionsManager: SearchOptionsManager
+	let searchStore: SearchStore
 	
-	var searchOptions: [String] = []
+	//var searchOptions: [String] = []
+	
+	var favoriteSearchTypes: [SearchOption] = []
 	
 	let tableView = UITableView()
 	
 	
-	init(searchOptionsManager: SearchOptionsManager = SearchOptionsManager()) {
-		self.searchOptionsManager = searchOptionsManager
+	init(searchStore: SearchStore = JSONSearchStore()) {
+//		self.searchOptionsManager = searchOptionsManager
+		self.searchStore = searchStore
 		super.init(nibName: nil, bundle: nil)
 	}
 	
@@ -35,10 +39,13 @@ class MainVC: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		getSearchOptions()
+		favoriteSearchTypes = searchStore.getFavorites()
+		DispatchQueue.main.async {
+			self.tableView.reloadData()
+		}
 	}
 	
-	
+	/*
 	private func getSearchOptions() {
 		searchOptionsManager.retriveFavorites { result in
 			switch result {
@@ -49,8 +56,9 @@ class MainVC: UIViewController {
 			}
 		}
 	}
+	*/
 	
-	
+	/*
 	private func updateUI(with options: [String]) {
 		if options.isEmpty {
 			// show empty state view
@@ -63,11 +71,10 @@ class MainVC: UIViewController {
 			}
 		}
 	}
-	
+	*/
 	
 	@objc private func showAvalableSearchOptions(_ sender: UIBarButtonItem) {
-		print(#function)
-		let searchOptionsVC = SearchOptionsVC(searchOptionsManager: searchOptionsManager)
+		let searchOptionsVC = SearchOptionsVC(searchStore: searchStore)
 		navigationController?.pushViewController(searchOptionsVC, animated: true)
 	}
 	
@@ -100,17 +107,17 @@ class MainVC: UIViewController {
 extension MainVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return searchOptions.count
+		return favoriteSearchTypes.count
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let searchName = searchOptions[indexPath.row]
+		let search = favoriteSearchTypes[indexPath.row]
 		
 		let cell = tableView.dequeueReusableCell(withIdentifier: SearchOptionCell.reuseId, for: indexPath) as! SearchOptionCell
 		cell.iconImageView.image = UIImage(systemName: "magnifyingglass.circle")
-		cell.titleLabel.text = searchName
+		cell.titleLabel.text = search.name
 		return cell
 	}
 }
@@ -122,6 +129,7 @@ extension MainVC: UITableViewDelegate {
 		
 		guard editingStyle == .delete else { return }
 		
+		/*
 		searchOptionsManager.updateWith(favorite: searchOptions[indexPath.row], actionType: .remove) { [weak self] error in
 			
 			guard let self = self else { return }
@@ -134,13 +142,13 @@ extension MainVC: UITableViewDelegate {
 			
 			print("error removing item \(error.localizedDescription)")
 		}
+		 */
 	}
 	
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
 		tableView.deselectRow(at: indexPath, animated: true)
-		
 		navigationController?.pushViewController(PhotosVC(), animated: true)
 	}
 }
