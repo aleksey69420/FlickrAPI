@@ -67,14 +67,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5B65E2E92848501A00F081B7 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				5BD4A268283F25B100BCFE65 /* SearchOptionsManager.swift */,
+				5B65E2E32845801000F081B7 /* Search.swift */,
+				5B65E2E7284703FC00F081B7 /* SearchStore.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		5BD4A258283D34DC00BCFE65 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				5BD4A259283D34F500BCFE65 /* PhotoDataSource.swift */,
 				5BE6D9EA2833DD3800FD603F /* FlickrPhoto.swift */,
-				5BD4A268283F25B100BCFE65 /* SearchOptionsManager.swift */,
-				5B65E2E32845801000F081B7 /* Search.swift */,
-				5B65E2E7284703FC00F081B7 /* SearchStore.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -134,6 +141,7 @@
 				5BD4A261283D472300BCFE65 /* View */,
 				5BD4A25E283D46BD00BCFE65 /* Controller */,
 				5BD4A258283D34DC00BCFE65 /* Model */,
+				5B65E2E92848501A00F081B7 /* Persistence */,
 				5BE6D9E72833D91B00FD603F /* Networking */,
 				5BE6D9E42833D58300FD603F /* Support */,
 			);
