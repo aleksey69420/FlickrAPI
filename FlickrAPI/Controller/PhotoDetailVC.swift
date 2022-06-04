@@ -9,6 +9,9 @@ import UIKit
 
 class PhotoDetailVC: UIViewController {
 	
+	//TODO: - Dependency Injection
+	let imageStore: ImageStore = NetworkManager.imageStore
+	
 	let imageView = UIImageView()
 	
 	let photo: FlickrPhoto
@@ -48,7 +51,7 @@ class PhotoDetailVC: UIViewController {
 	
 	
 	private func fetchImage() {
-		if let image = NetworkManager.cache.object(forKey: photo.id as NSString) {
+		if let image = imageStore.getImage(forKey: photo.id) {
 			imageView.image = image
 		} else {
 			// spin, placeholder, set the size in advance (available)

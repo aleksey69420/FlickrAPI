@@ -78,20 +78,20 @@ class NetworkManager {
 	
 	// MARK: - Image Download
 	
+	//TODO: - refactor to dependency injection
+	//TODO: - use URL for caching images because id doen't tell what is the image resolution
+	static let imageStore: ImageStore = CacheImageStore()
+	
 	enum PhotoError: Error {
 		case missingURL
 		case imageCreationError
 	}
 	
-	// how can I extract this - the whole download images logic is too complicated
-	static let cache = NSCache<NSString, UIImage>()
 	
 	class func fetchImage(for photo: FlickrPhoto, then handler: @escaping (Result<UIImage, Error>) -> Void) {
 		
-		let cacheKey = photo.id as NSString
 		
-		if let image = cache.object(forKey: cacheKey) {
-			print("got image from cache")
+		if let image = imageStore.getImage(forKey: photo.id) {
 			DispatchQueue.main.async {
 				handler(.success(image))
 			}
@@ -105,11 +105,15 @@ class NetworkManager {
 		
 		let request = URLRequest(url: photoURL)
 		let task = URLSession.shared.dataTask(with: request) { data, response, error in
+			
 			let result = self.processImageRequest(data: data, error: error)
 			
-			// super wierd way to do this - can be replaced with switch on result
-			if case let .success(image) = result {
-				cache.setObject(image, forKey: cacheKey)
+
+			switch result {
+			case .success(let image):
+				imageStore.saveImage(image, forKey: photo.id)
+			case .failure(let error):
+				print(Log.error("error during image processing: \(error)"))
 			}
 			
 			DispatchQueue.main.async {
