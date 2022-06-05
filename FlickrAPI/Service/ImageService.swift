@@ -15,7 +15,7 @@ class ImageService {
 	let fileManager = FileManager.default
 	
 	
-	func saveImage(_ image: UIImage, forKey key: String) {
+	func setImage(_ image: UIImage, forKey key: String) {
 		let cacheKey = key as NSString
 		cache.setObject(image, forKey: cacheKey)
 		print("just saved image in cache")
@@ -30,7 +30,7 @@ class ImageService {
 	}
 	
 	
-	func getImage(forKey key: String) -> UIImage? {
+	func image(forKey key: String) -> UIImage? {
 		let cacheKey = key as NSString
 		
 		if let imageFromCache = cache.object(forKey: cacheKey) {

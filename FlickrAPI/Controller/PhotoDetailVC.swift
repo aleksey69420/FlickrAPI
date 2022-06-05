@@ -10,7 +10,7 @@ import UIKit
 class PhotoDetailVC: UIViewController {
 	
 	//TODO: - Dependency Injection
-	let imageStore = NetworkManager.imageStore
+	let imageService = NetworkManager.imageService
 	
 	let imageView = UIImageView()
 	
@@ -51,7 +51,7 @@ class PhotoDetailVC: UIViewController {
 	
 	
 	private func fetchImage() {
-		if let image = imageStore.getImage(forKey: photo.id) {
+		if let image = imageService.image(forKey: photo.id) {
 			imageView.image = image
 		} else {
 			// spin, placeholder, set the size in advance (available)

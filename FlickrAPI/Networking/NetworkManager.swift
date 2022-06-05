@@ -80,7 +80,7 @@ class NetworkManager {
 	
 	//TODO: - refactor to dependency injection
 	//TODO: - use URL for caching images because id doen't tell what is the image resolution
-	static let imageStore = ImageService()
+	static let imageService = ImageService()
 	
 	enum PhotoError: Error {
 		case missingURL
@@ -91,7 +91,7 @@ class NetworkManager {
 	class func fetchImage(for photo: FlickrPhoto, then handler: @escaping (Result<UIImage, Error>) -> Void) {
 		
 		
-		if let image = imageStore.getImage(forKey: photo.id) {
+		if let image = imageService.image(forKey: photo.id) {
 			DispatchQueue.main.async {
 				handler(.success(image))
 			}
@@ -111,7 +111,7 @@ class NetworkManager {
 
 			switch result {
 			case .success(let image):
-				imageStore.saveImage(image, forKey: photo.id)
+				imageService.setImage(image, forKey: photo.id)
 			case .failure(let error):
 				print(Log.error("error during image processing: \(error)"))
 			}
