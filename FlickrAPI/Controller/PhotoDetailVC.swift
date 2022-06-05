@@ -10,7 +10,7 @@ import UIKit
 class PhotoDetailVC: UIViewController {
 	
 	//TODO: - Dependency Injection
-	let imageStore: ImageStore = NetworkManager.imageStore
+	let imageStore = NetworkManager.imageStore
 	
 	let imageView = UIImageView()
 	

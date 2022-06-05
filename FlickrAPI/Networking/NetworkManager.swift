@@ -80,7 +80,7 @@ class NetworkManager {
 	
 	//TODO: - refactor to dependency injection
 	//TODO: - use URL for caching images because id doen't tell what is the image resolution
-	static let imageStore: ImageStore = CacheImageStore()
+	static let imageStore = ImageService()
 	
 	enum PhotoError: Error {
 		case missingURL

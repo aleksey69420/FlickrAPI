@@ -1,5 +1,5 @@
 //
-//  ImageStore.swift
+//  ImageService.swift
 //  FlickrAPI
 //
 //  Created by Aleksey on 6/1/22.
@@ -8,14 +8,7 @@
 
 import UIKit
 
-protocol ImageStore {
-	func saveImage(_ image: UIImage, forKey key: String)
-	func getImage(forKey key: String) -> UIImage?
-	func deleleImage(forKey key: String)
-}
-
-
-class CacheImageStore: ImageStore {
+class ImageService {
 	
 	private let cache = NSCache<NSString, UIImage>()
 	
